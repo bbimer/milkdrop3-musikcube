@@ -1325,6 +1325,8 @@ bool CState::Import(const wchar_t *szIniFile, float fTime, CState* pOldState, DW
         nWarpPSVersionInFile = GetFastInt("PSVERSION_WARP", 2, f);
         nCompPSVersionInFile = GetFastInt("PSVERSION_COMP", 2, f);
     }
+    if (nWarpPSVersionInFile > MD2_PS_3_0) nWarpPSVersionInFile = MD2_PS_3_0;
+    if (nCompPSVersionInFile > MD2_PS_3_0) nCompPSVersionInFile = MD2_PS_3_0;
 
     // general:
     if (ApplyFlags & STATE_GENERAL)

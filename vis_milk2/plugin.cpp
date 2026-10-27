@@ -507,6 +507,8 @@ Order of Function Calls
 
 #define FRAND ((rand() % 7381)/7380.0f)
 
+static bool m_bAlwaysOnTop = false;
+
 void NSEEL_HOSTSTUB_EnterMutex(){}
 void NSEEL_HOSTSTUB_LeaveMutex(){}
 
@@ -879,10 +881,10 @@ void CPlugin::OverrideDefaults()
     // m_start_fullscreen      = 0;       // 0 or 1
     // m_start_desktop         = 0;       // 0 or 1
     // m_fake_fullscreen_mode  = 0;       // 0 or 1
-    // m_max_fps_fs            = 30;      // 1-120, or 0 for 'unlimited'
+       m_max_fps_fs            = 60;       // 1-120, or 0 for 'unlimited'
     // m_max_fps_dm            = 30;      // 1-120, or 0 for 'unlimited'
-    // m_max_fps_w             = 30;      // 1-120, or 0 for 'unlimited'
-    // m_show_press_f1_msg     = 1;       // 0 or 1
+       m_max_fps_w             = 60;       // 1-120, or 0 for 'unlimited'
+       m_show_press_f1_msg     = 0;       // 0 or 1
        m_allow_page_tearing_w  = 0;       // 0 or 1
     // m_allow_page_tearing_fs = 0;       // 0 or 1
     // m_allow_page_tearing_dm = 1;       // 0 or 1
@@ -945,12 +947,12 @@ void CPlugin::MyPreInitialize()
 	//m_nWidth			= 1024;
 	//m_nHeight			= 768;
 	//m_nDispBits		= 16;
-    m_nCanvasStretch    = 0;
+    m_nCanvasStretch    = 100;
 	m_nTexSizeX			= -1;	// -1 means "auto"
 	m_nTexSizeY			= -1;	// -1 means "auto"
 	m_nTexBitsPerCh     =  8;
-	m_nGridX			= 48;//32;
-	m_nGridY			= 36;//24;
+	m_nGridX			= 64;//32;
+	m_nGridY			= 64;//24;
 
 	m_bShowPressF1ForHelp = true;
 	//lstrcpy(m_szMonitorName, "[don't use multimon]");
@@ -977,11 +979,11 @@ void CPlugin::MyPreInitialize()
     //m_bAnisotropicFiltering = true;
     m_bPresetLockOnAtStartup = false;
 	m_bPreventScollLockHandling = false;
-    m_nMaxPSVersion_ConfigPanel = -1;  // -1 = auto, 0 = disable shaders, 2 = ps_2_0, 3 = ps_3_0
-    m_nMaxPSVersion_DX9 = -1;          // 0 = no shader support, 2 = ps_2_0, 3 = ps_3_0
-    m_nMaxPSVersion = -1;              // this one will be the ~min of the other two.  0/2/3.
-    m_nMaxImages = 32;
-    m_nMaxBytes  = 16000000;
+    m_nMaxPSVersion_ConfigPanel = 3;  // -1 = auto, 0 = disable shaders, 2 = ps_2_0, 3 = ps_3_0
+    m_nMaxPSVersion_DX9 = 3;          // 0 = no shader support, 2 = ps_2_0, 3 = ps_3_0
+    m_nMaxPSVersion = 3;              // this one will be the ~min of the other two.  0/2/3.
+    m_nMaxImages = 3000;
+    m_nMaxBytes  = 2000000000;
 
     #ifdef _DEBUG
         m_dwShaderFlags = D3DXSHADER_DEBUG|(1<<16);
@@ -1194,17 +1196,17 @@ void CPlugin::MyReadConfig()
     m_bPresetLockOnAtStartup = GetPrivateProfileBoolW(L"settings",L"bPresetLockOnAtStartup",m_bPresetLockOnAtStartup,pIni);
 	m_bPreventScollLockHandling = GetPrivateProfileBoolW(L"settings",L"m_bPreventScollLockHandling",m_bPreventScollLockHandling,pIni);
 
-    m_nCanvasStretch = GetPrivateProfileIntW(L"settings",L"nCanvasStretch"    ,m_nCanvasStretch,pIni);
-	m_nTexSizeX		= GetPrivateProfileIntW(L"settings",L"nTexSize"    ,m_nTexSizeX   ,pIni);
-	m_nTexSizeY		= m_nTexSizeX;
+    m_nCanvasStretch = 100;
+	m_nTexSizeX		= -1;
+	m_nTexSizeY		= -1;
 	m_bTexSizeWasAutoPow2   = (m_nTexSizeX == -2);
 	m_bTexSizeWasAutoExact = (m_nTexSizeX == -1);
 	m_nTexBitsPerCh = GetPrivateProfileIntW(L"settings", L"nTexBitsPerCh", m_nTexBitsPerCh, pIni);
-	m_nGridX		= GetPrivateProfileIntW(L"settings",L"nMeshSize"   ,m_nGridX      ,pIni);
-	m_nGridY        = m_nGridX*3/4;
+	m_nGridX		= 64;
+	m_nGridY        = 64;
     m_nMaxPSVersion_ConfigPanel = GetPrivateProfileIntW(L"settings",L"MaxPSVersion",m_nMaxPSVersion_ConfigPanel,pIni);
-    m_nMaxImages    = GetPrivateProfileIntW(L"settings",L"MaxImages",m_nMaxImages,pIni);
-    m_nMaxBytes     = GetPrivateProfileIntW(L"settings",L"MaxBytes" ,m_nMaxBytes ,pIni);
+    m_nMaxImages    = 3000;
+    m_nMaxBytes     = 2000000000;
 
 	m_fBlendTimeUser			= GetPrivateProfileFloatW(L"settings",L"fBlendTimeUser"         ,m_fBlendTimeUser         ,pIni);
 	m_fBlendTimeAuto			= GetPrivateProfileFloatW(L"settings",L"fBlendTimeAuto"         ,m_fBlendTimeAuto         ,pIni);
@@ -1292,13 +1294,13 @@ void CPlugin::MyWriteConfig()
 	WritePrivateProfileIntW(m_bPreventScollLockHandling,L"m_bPreventScollLockHandling",pIni,L"settings");
     // note: this is also written @ exit of the visualizer
 
-    WritePrivateProfileIntW(m_nCanvasStretch,        L"nCanvasStretch",   	pIni, L"settings");
-    WritePrivateProfileIntW(m_nTexSizeX,			    L"nTexSize",				pIni, L"settings");
+    WritePrivateProfileIntW(100,        L"nCanvasStretch",   	pIni, L"settings");
+    WritePrivateProfileIntW(-1,			    L"nTexSize",				pIni, L"settings");
 	WritePrivateProfileIntW(m_nTexBitsPerCh,         L"nTexBitsPerCh",        pIni, L"settings");
-	WritePrivateProfileIntW(m_nGridX, 				L"nMeshSize",			pIni, L"settings");
-	WritePrivateProfileIntW(m_nMaxPSVersion_ConfigPanel, L"MaxPSVersion",  	pIni, L"settings");
-    WritePrivateProfileIntW(m_nMaxImages, L"MaxImages",  	pIni, L"settings");
-    WritePrivateProfileIntW(m_nMaxBytes , L"MaxBytes",  	pIni, L"settings");
+	WritePrivateProfileIntW(64, 				L"nMeshSize",			pIni, L"settings");
+	WritePrivateProfileIntW(3, L"MaxPSVersion",  	pIni, L"settings");
+    WritePrivateProfileIntW(64, L"MaxImages",  	pIni, L"settings");
+    WritePrivateProfileIntW(2000000000 , L"MaxBytes",  	pIni, L"settings");
 
 	WritePrivateProfileFloatW(m_fBlendTimeAuto,          L"fBlendTimeAuto",           pIni, L"settings");
 	WritePrivateProfileFloatW(m_fBlendTimeUser,          L"fBlendTimeUser",           pIni, L"settings");
@@ -3385,7 +3387,7 @@ bool CPlugin::RecompilePShader(const char* szShadersText, PShaderInfo *si, int s
 		case MD2_PS_2_0: lstrcpy(ver, "ps_2_0"); break;
 		case MD2_PS_2_X: lstrcpy(ver, "ps_2_a"); break; // we'll try ps_2_a first, LoadShaderFromMemory will try ps_2_b if compilation fails
 		case MD2_PS_3_0: lstrcpy(ver, "ps_3_0"); break;
-		case MD2_PS_4_0: lstrcpy(ver, "ps_4_0"); break;
+		case MD2_PS_4_0: lstrcpy(ver, "ps_3_0"); break;
 		default: assert(0); break;
 		}
 
@@ -5125,6 +5127,24 @@ void CPlugin::MyRenderUI(
 }
 
 //----------------------------------------------------------------------
+
+
+//BeatDrop2077: Always On Top F7
+void ToggleAlwaysOnTop(HWND hwnd) {
+	RECT rect;
+	GetWindowRect(hwnd, &rect);
+	int x = rect.left;
+	int y = rect.top;
+	int width = rect.right - rect.left;
+	int height = rect.bottom - rect.top;
+
+	if (m_bAlwaysOnTop) {
+		SetWindowPos(hwnd, HWND_TOPMOST, x, y, width, height, SWP_DRAWFRAME | SWP_FRAMECHANGED);
+	}
+	else {
+		SetWindowPos(hwnd, HWND_NOTOPMOST, x, y, width, height, SWP_DRAWFRAME | SWP_FRAMECHANGED);
+	}
+}
 
 LRESULT CPlugin::MyWindowProc(HWND hWnd, unsigned uMsg, WPARAM wParam, LPARAM lParam)
 {

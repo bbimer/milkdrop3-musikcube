@@ -37,9 +37,9 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //   compiled to, go to Project Settings -> Link tab -> and change the
 //   'output file name'.  Don't forget to do it for both Debug AND
 //   Release builds!
-#define SHORTNAME        "MilkDrop 2" // used as window caption for both MilkDrop and the config panel.  avoid numbers or punctuation; when 'integrate with winamp' option is enabled, these characters don't always work with all skins.
-#define LONGNAME         "MilkDrop v2.25c" // appears at bottom of config panel
-#define LONGNAMEW        L"MilkDrop v2.25c" // appears at bottom of config panel
+#define SHORTNAME        "MilkDrop 3" // used as window caption for both MilkDrop and the config panel.  avoid numbers or punctuation; when 'integrate with winamp' option is enabled, these characters don't always work with all skins.
+#define LONGNAME         "MilkDrop v3.37" // appears at bottom of config panel
+#define LONGNAMEW        L"MilkDrop v3.37" // appears at bottom of config panel
 
 // INT_VERSION is the major version #, multipled by 100 (ie. version 1.02
 // would be 102).  If the app goes to read in the INI file and sees that
@@ -137,22 +137,22 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //     verdana
 //     webdings
 #define SIMPLE_FONT_DEFAULT_FACE L"Courier" //"MS Sans Serif"  - changed to Courier because menus + code FAR more legible!
-#define SIMPLE_FONT_DEFAULT_SIZE 12 //16
+#define SIMPLE_FONT_DEFAULT_SIZE 24
 #define SIMPLE_FONT_DEFAULT_BOLD 0
 #define SIMPLE_FONT_DEFAULT_ITAL 0
 #define SIMPLE_FONT_DEFAULT_AA   0
 #define DECORATIVE_FONT_DEFAULT_FACE L"Arial"
-#define DECORATIVE_FONT_DEFAULT_SIZE 22
+#define DECORATIVE_FONT_DEFAULT_SIZE 24
 #define DECORATIVE_FONT_DEFAULT_BOLD 0
 #define DECORATIVE_FONT_DEFAULT_ITAL 0
 #define DECORATIVE_FONT_DEFAULT_AA   1
 #define HELPSCREEN_FONT_DEFAULT_FACE L"Courier"
-#define HELPSCREEN_FONT_DEFAULT_SIZE 12  // NOTE: should fit on 640x480 screen!
+#define HELPSCREEN_FONT_DEFAULT_SIZE 24  // NOTE: should fit on 640x480 screen!
 #define HELPSCREEN_FONT_DEFAULT_BOLD 0
 #define HELPSCREEN_FONT_DEFAULT_ITAL 0
 #define HELPSCREEN_FONT_DEFAULT_AA   0
 #define PLAYLIST_FONT_DEFAULT_FACE L"Arial"
-#define PLAYLIST_FONT_DEFAULT_SIZE 16
+#define PLAYLIST_FONT_DEFAULT_SIZE 24
 #define PLAYLIST_FONT_DEFAULT_BOLD 0
 #define PLAYLIST_FONT_DEFAULT_ITAL 0
 #define PLAYLIST_FONT_DEFAULT_AA   0
@@ -213,7 +213,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DIR_COLOR     0xFF88CCFF
 #define TOOLTIP_COLOR 0xFFBBBBCC
 
-#define MAX_PRESETS_PER_PAGE 32
+#define MAX_PRESETS_PER_PAGE 128
 
 //#define PRESS_F1_MSG                 "Press F1 for Help " // leave extra space @ end, so italicized fonts don't get clipped
 // defined in the stringtable resources now since 2.0e
